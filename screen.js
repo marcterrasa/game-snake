@@ -39,13 +39,21 @@ class Screen {
         }
     }
 
-    drawFood() {
-        this.drawPixel(0, 0, FOOD_COLOR);
+    drawFood(food) {
+        this.drawPixel(food.x, food.y, FOOD_COLOR);
     }
 
     drawPixel(x, y, color) {
         this.ctx.fillStyle = color;
         this.ctx.fillRect((x * PIXEL_SIZE) + 1, (y * PIXEL_SIZE) + 1, PIXEL_SIZE - 1, PIXEL_SIZE - 1)
+    }
+
+    randomX() {
+        return Math.floor(Math.random() * CANVAS_WIDTH);
+    }
+
+    randomY() {
+        return Math.floor(Math.random() * CANVAS_WIDTH);
     }
 
 }

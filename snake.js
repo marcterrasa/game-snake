@@ -1,8 +1,8 @@
 const directions = {
-    UP: {name: 'up', axis: 'y'},
-    DOWN: {name: 'down', axis: 'y'},
-    LEFT: {name: 'left', axis: 'x'},
-    RIGHT: {name: 'right', axis: 'x'},
+    UP: {name: 'up', axis: 'y', modifier: -1},
+    DOWN: {name: 'down', axis: 'y', modifier: 1},
+    LEFT: {name: 'left', axis: 'x', modifier: -1},
+    RIGHT: {name: 'right', axis: 'x', modifier: 1},
 }
 
 class SnakePart {
@@ -29,20 +29,7 @@ class Snake {
             this.parts[i - 1].y = this.parts[i - 2].y;
         }
 
-        switch (this.direction) {
-            case directions.UP:
-                this.parts[0].y -= 1;
-                break;
-            case directions.DOWN:
-                this.parts[0].y += 1;
-                break;
-            case directions.LEFT:
-                this.parts[0].x -= 1;
-                break;
-            case directions.RIGHT:
-                this.parts[0].x +=1;
-                break;
-        }
+        this.head[this.direction.axis] += this.direction.modifier;
     }
 
     changeDirection(newDirection) {
@@ -59,9 +46,28 @@ class Snake {
         return false;
     }
 
+    eatsFood(food) {
+        return this.head.x === food.x && this.head.y === food.y;
+    }
+
+    grow(){
+        this.parts.push(new SnakePart(this.tail.x, this.tail.y));
+    }
+
     get head() {
         return this.parts[0];
     }
+
+    get tail() {
+        return this.parts[this.parts.length - 1];
+    }
 }
 
-export {Snake, directions}
+class Food {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+export {Snake, Food, directions}

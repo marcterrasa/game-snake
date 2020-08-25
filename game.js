@@ -1,4 +1,4 @@
-import {Snake, directions} from './snake.js';
+import {Snake, Food, directions} from './snake.js';
 import {Screen, START_X, START_Y} from './screen.js';
 
 const KEY_DIRECTION_MAPPING = {
@@ -17,7 +17,8 @@ class Game {
     }
 
     start() {
-        this.snake = new Snake(START_X, START_Y);
+        this.snake = this.generateSnake();
+        this.food = this.generateFood();
 
         document.addEventListener('keydown', e => this.keyDownHandler(e.key), false);
 
@@ -25,18 +26,29 @@ class Game {
     }
 
     onTick() {
-        console.log("Executing")
         this.snake.move();
 
         if (this.screen.canDraw(this.snake)) {
+            if (this.snake.eatsFood(this.food)) {
+                this.snake.grow();
+                this.food = this.generateFood();
+            }
+
             this.screen.clear();
-            this.screen.drawFood();
+            this.screen.drawFood(this.food);
             this.screen.drawSnake(this.snake);
         } else {
-            this.snake = null;
             clearInterval(this.tickIntervalId);
             if(confirm("You ded boi. Again?")) this.start()
         }
+    }
+
+    generateSnake() {
+        return new Snake(START_X, START_Y);
+    }
+
+    generateFood() {
+        return new Food(this.screen.randomX(), this.screen.randomY());
     }
 
     keyDownHandler(key) {
