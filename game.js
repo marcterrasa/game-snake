@@ -8,7 +8,7 @@ const KEY_DIRECTION_MAPPING = {
     'ArrowRight': directions.RIGHT,
 }
 
-const TICK_MS = 80;
+const TICK_MS = 60;
 
 class Game {
 

@@ -21,9 +21,12 @@ class Snake {
             new SnakePart(x - 2, y),
         ]
         this.direction = directions.RIGHT;
+        this.newDirection = directions.RIGHT;
     }
 
     move() {
+        this.direction = this.newDirection;
+
         for (let i = this.parts.length; i > 1; i--) {
             this.parts[i - 1].x = this.parts[i - 2].x;
             this.parts[i - 1].y = this.parts[i - 2].y;
@@ -34,7 +37,7 @@ class Snake {
 
     changeDirection(newDirection) {
         if (this.direction.axis != newDirection.axis) {
-            this.direction = newDirection;
+            this.newDirection = newDirection;
         }
     }
 
