@@ -1,23 +1,31 @@
-// const
+// Constants
 const SNAKE_COLOR = "white"
 const FOOD_COLOR = "red"
 const CANVAS_BACKGROUND_COLOR = '#1A1A1A';
 const PIXEL_SIZE = 20;
-const CANVAS_WIDTH = 41;
-const CANVAS_HEIGTH = 41;
-
-// calculated consts
-const START_X = Math.floor(CANVAS_WIDTH / 2) + 1;
-const START_Y = Math.floor(CANVAS_HEIGTH / 2) + 1;
+const CANVAS_PERCENTATGE = 0.8
 
 class Screen {
 
     constructor(canvas) {
         this.canvas = canvas;
-        canvas.height = CANVAS_HEIGTH * PIXEL_SIZE;
-        canvas.width = CANVAS_WIDTH * PIXEL_SIZE;
+
+        const canvasWidth = this.calculateReducedSize(window.innerWidth);
+        const canvasHeight = this.calculateReducedSize(window.innerHeight);
+
+        this.canvas.width = canvasWidth;
+        this.canvas.height = canvasHeight;
+        this.canvasPixelWidth = canvasWidth / PIXEL_SIZE;
+        this.canvasPixelHeight = canvasHeight / PIXEL_SIZE;
 
         this.ctx = canvas.getContext('2d');
+    }
+
+    calculateReducedSize(fullSize) {
+        const actualSize = fullSize * CANVAS_PERCENTATGE;
+
+        // Round it up to be divisible by pixel size
+        return actualSize - (actualSize % PIXEL_SIZE)
     }
 
     clear() {
@@ -28,8 +36,8 @@ class Screen {
     canDraw(snake) {
         return snake.head.x >= 0
             && snake.head.y >= 0
-            && snake.head.x < CANVAS_WIDTH
-            && snake.head.y < CANVAS_HEIGTH
+            && snake.head.x < this.canvasPixelWidth
+            && snake.head.y < this.canvasPixelHeight
             && !snake.headCollidesBody();
     }
     
@@ -49,13 +57,21 @@ class Screen {
     }
 
     randomX() {
-        return Math.floor(Math.random() * CANVAS_WIDTH);
+        return Math.floor(Math.random() * this.canvasPixelWidth);
     }
 
     randomY() {
-        return Math.floor(Math.random() * CANVAS_WIDTH);
+        return Math.floor(Math.random() * this.canvasPixelHeight);
+    }
+
+    get startX() {
+        return Math.floor(this.canvasPixelWidth / 2) + 1;
+    }
+
+    get startY() {
+        return Math.floor(this.canvasPixelHeight / 2) + 1;
     }
 
 }
 
-export {Screen, START_X, START_Y}
+export {Screen}

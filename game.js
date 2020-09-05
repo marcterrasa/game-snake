@@ -1,5 +1,5 @@
 import {Snake, Food, directions} from './snake.js';
-import {Screen, START_X, START_Y} from './screen.js';
+import {Screen} from './screen.js';
 
 const KEY_DIRECTION_MAPPING = {
     'ArrowUp': directions.UP,
@@ -44,9 +44,10 @@ class Game {
     }
 
     generateSnake() {
-        return new Snake(START_X, START_Y);
+        return new Snake(this.screen.startX, this.screen.startY);
     }
 
+    // This cood generate food in a pixel where the snake is currently in
     generateFood() {
         return new Food(this.screen.randomX(), this.screen.randomY());
     }
